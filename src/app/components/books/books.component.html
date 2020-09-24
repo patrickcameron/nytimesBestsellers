@@ -1,0 +1,20 @@
+<div *ngIf="books" class="container">
+    <div class="hero has-text-centered">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">{{ listTitle }}</h1>
+                <h2 class="subtitle">{{ listDate | date }}</h2>
+            </div>
+        </div>
+    </div>
+    <div>
+        <app-book 
+            class="columns books" 
+            *ngFor="let book of books" 
+            [book]="book"
+            (checkIfSaved)="checkIfSaved($event)"
+            (toggleSaveBook)="toggleSaveBook($event)"
+        >
+        </app-book>
+    </div>
+</div>

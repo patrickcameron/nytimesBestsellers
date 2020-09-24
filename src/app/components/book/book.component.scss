@@ -1,0 +1,13 @@
+.book-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .button i {
+        font-size: 14px;
+    }
+}
+
+.book-image {
+    width: 100%;
+}
