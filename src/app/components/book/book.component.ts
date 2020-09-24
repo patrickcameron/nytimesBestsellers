@@ -33,10 +33,4 @@ export class BookComponent implements OnInit {
   //     console.log(data);
   //   });
   // }
-
-  // getTPLSearchUrl(title: string, author: string) {
-  //   const baseUrl = 'https://www.torontopubliclibrary.ca/search.jsp?Ntt=';
-  //   return encodeURI(`${baseUrl}${title} ${author}`);
-  // }
-
 }
