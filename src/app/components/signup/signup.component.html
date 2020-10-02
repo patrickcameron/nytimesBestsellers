@@ -1,17 +1,33 @@
 <div class="columns">
     <div class="column"></div>
-    <form class="column is-half-tablet" action="">
+    <form class="column is-half-tablet" (submit)="onSubmit()">
         <h1 class="is-size-1 has-text-centered">Sign Up</h1>
         <div class="field">
             <label class="label" for="email">Email</label>
             <div class="control">
-                <input class="input" type="email" id="email" required>
+                <input 
+                    class="input" 
+                    autocomplete="username"
+                    name="email"
+                    type="email" 
+                    id="email" 
+                    [(ngModel)]="email"
+                    required
+                >
             </div>
         </div>
         <div class="field">
             <label class="label" for="password">Password</label>
             <div class="control">
-                <input class="input" type="password" id="password" required>
+                <input 
+                    class="input" 
+                    autocomplete="current-password"
+                    name="password"
+                    type="password" 
+                    id="password" 
+                    [(ngModel)]="password"
+                    required
+                >
             </div>
         </div>
         <div class="field">

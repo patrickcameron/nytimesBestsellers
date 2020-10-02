@@ -2,8 +2,7 @@
     <img class="book-image" src="{{ book.book_image }}" alt="">
 </div>
 <div class="column book-details">
-    {{ book.primary_isbn13 }}
-    <div class="block">
+    <div *ngIf="showBookRank" class="block">
         <span class="tag is-medium is-rounded">#{{ book.rank }}</span>
     </div>
     <div class="block">
@@ -13,8 +12,8 @@
     <div class="block">
         <p>{{ book.description }}</p>
     </div>
-    <div class="block buttons">
-        <button [ngClass]="{'is-loading':isSaving}" class="button is-link" (click)="saveBook(book.primary_isbn13)">
+    <div *ngIf="isLoggedIn" class="block buttons">
+        <button [ngClass]="{'is-loading':isSaving}" class="button is-link" (click)="saveBook(book)">
             <span *ngIf="book.isSaved" class="icon is-small">
                 <i class="fas fa-check"></i>
             </span>

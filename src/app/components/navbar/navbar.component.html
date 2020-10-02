@@ -5,12 +5,22 @@
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
-          <div class="buttons">
+          <div *ngIf="isLoggedIn === false" class="buttons">
             <a routerLink="/signup" class="button is-dark">
               <strong>Sign up</strong>
             </a>
             <a routerLink="/login" class="button is-light">
               Log in
+            </a>
+          </div>
+          <div *ngIf="isLoggedIn === true" class="buttons">
+            <a routerLink="/profile" class="button is-link">
+              <strong>My Books</strong>
+              <!-- &nbsp;&nbsp;
+              <span class="tag is-rounded">0</span> -->
+            </a>
+            <a (click)="logout()" class="button is-light">
+              Log Out
             </a>
           </div>
         </div>

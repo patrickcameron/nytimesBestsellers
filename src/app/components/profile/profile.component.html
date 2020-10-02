@@ -1,0 +1,19 @@
+<div class="hero has-text-centered">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">My Books</h1>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="books" class="container">    
+    <div>
+        <app-book 
+            class="columns books" 
+            *ngFor="let book of books" 
+            [book]="book"
+            [showBookRank]="false"
+        >
+        </app-book>
+    </div>
+</div>

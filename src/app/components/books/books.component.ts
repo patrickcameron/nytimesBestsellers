@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NytimesService } from '../../services/nytimes.service';
+
+import { FirebaseService } from '../../services/firebase.service';
+
 import { Book } from '../../models/Book';
 
 @Component({
@@ -12,14 +15,31 @@ export class BooksComponent implements OnInit {
   savedBooks: number[];
   listDate: any;
   listTitle: string;
+  isLoggedIn: boolean = false;
 
-  constructor(private _booksService: NytimesService) { }
+  constructor(private _booksService: NytimesService, private _firebaseService: FirebaseService) { }
 
   ngOnInit(): void {
+
+    // this._firebaseService.getSavedBooks().subscribe(books => {
+    //   console.log(books);
+    // });
+
+    // this._firebaseService.register('patcameron5@gmail.com', '123456');
+
+    this._firebaseService.getAuth().subscribe(auth => {
+      if (auth) {
+        this.isLoggedIn = true;
+      } else {
+        this.isLoggedIn = false;
+      }
+    })
+
     this._booksService.getBestsellerList().subscribe(data => { 
       this.listTitle = data.results.list_name;
-      this.listDate = this.convertDate(data.results.bestsellers_date);
+      this.listDate = this.formatDate(data.results.bestsellers_date);
       this.books = data.results.books.map(book => {
+        console.log(book);
         return {
           ...book,
           isSaved: this.checkIfSaved(book.primary_isbn13)
@@ -28,8 +48,15 @@ export class BooksComponent implements OnInit {
     });
   }
 
+  saveBook(book: Book) {
+    this._firebaseService.saveBook(book);
+  }
+
+  removeBook(book: Book) {
+    // this._firebaseService.removeBook(book);
+  }
+
   checkIfSaved(isbn): boolean {
-    console.log('checkIfSaved');
     if (localStorage.getItem('savedBooks') === null) {
       return false;
     } else {
@@ -42,35 +69,7 @@ export class BooksComponent implements OnInit {
     }
   }
 
-  toggleSaveBook(isbn) {
-    if (localStorage.getItem('savedBooks') === null) {
-      console.log('bookIndex doesn\'t exist');
-      let savedArray = [isbn]
-      localStorage.setItem('savedBooks', isbn.toString());
-      console.log(localStorage.getItem('savedBooks'));
-    } else {
-      let savedArray = localStorage.getItem('savedBooks').split(',');
-      let bookIndex = savedArray.indexOf(isbn);
-      console.log('bookIndex: ' + bookIndex);
-      if (bookIndex > -1) {
-        // Remove book
-        console.log('bookIndex > 0. Book already saved.');
-        savedArray.splice(bookIndex, 1);
-        console.log(savedArray);
-        localStorage.setItem('savedBooks', savedArray.toString());
-        console.log(localStorage.getItem('savedBooks'));
-      } else {
-        // Add book
-        console.log('bookIndex < 0. Book not saved.');
-        savedArray.push(isbn);
-        console.log(savedArray);
-        localStorage.setItem('savedBooks', savedArray.toString());
-        console.log(localStorage.getItem('savedBooks'));
-      }
-    }
-  }
-
-  convertDate(date:string) {
+  formatDate(date:string) {
     const dateVals = date.split('-');
     const dateArray = dateVals.map(val => {
       return parseInt(val);

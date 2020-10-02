@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+
 import { NytimesService } from '../../services/nytimes.service';
+import { FirebaseService } from '../../services/firebase.service';
+
 import { Book } from '../../models/Book';
 
 @Component({
@@ -9,23 +12,21 @@ import { Book } from '../../models/Book';
 })
 export class BookComponent implements OnInit {
   @Input() book: Book;
+  @Input() isLoggedIn: boolean;
+  @Input() showBookRank: boolean = true;
   @Output() checkIfSaved: EventEmitter<any> = new EventEmitter<any>();
-  @Output() toggleSaveBook: EventEmitter<number> = new EventEmitter<number>();
   isSaving: boolean = false;
 
-  constructor(private _booksService: NytimesService) { }
+  constructor(private _booksService: NytimesService, private _firebaseService: FirebaseService) { }
 
   ngOnInit(): void {
     // this.getReview(this.book.primary_isbn13);
   }
 
-  saveBook(isbn) {
-    this.isSaving = !this.isSaving;
-    setTimeout(() => {
-      this.toggleSaveBook.emit(isbn);
-      this.isSaving = !this.isSaving;
-      this.book.isSaved = !this.book.isSaved;
-    }, 1000);
+  saveBook(book: Book) {
+    console.log('book component saveBook()');
+    console.log(book);
+    this._firebaseService.saveBook(book);
   }
 
   // getReview(isbn:number) {
