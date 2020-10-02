@@ -25,7 +25,7 @@ export class NytimesService {
         return observer.complete();
       }
       const url = 'https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json';
-      this._http.get(`${url}?api-key=${apiKeys.key}`).pipe().subscribe(books => {
+      this._http.get(`${url}?api-key=${apiKeys.nyTimes.key}`).pipe().subscribe(books => {
         this._books = books;
         observer.next(this._books);
         observer.complete();
