@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -13,30 +13,29 @@ import { Book } from '../models/Book';
 export class FirebaseService {
   savedBooks: Observable<any>;
   user: Observable<any>;
-  userId: string;
   authState: any = null;
 
-  constructor(private _afs: AngularFirestore, private _afAuth: AngularFireAuth) {
-    this._afAuth.authState.subscribe(user => {
-      if (user) this.userId = user.uid
-      console.log(this.userId);
-    })
-  }
+  constructor(private _afs: AngularFirestore, private _afAuth: AngularFireAuth) {}
 
   getSavedBooks(): Observable<any> {
-    if (!this.userId) return;
-    this.savedBooks = this._afs
-        .collection('userData')
-        .doc(this.userId)
-        .collection('savedBooks')
-        .snapshotChanges().pipe(map(changes => {
-          return changes.map(action => {
-            const data = action.payload.doc.data();
-            data.id = action.payload.doc.id;
-            console.log(data);
-            return data;
-          })
-        }))
+    this.savedBooks = this._afAuth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+          console.log(user.uid);
+          return this._afs
+          .collection('userData')
+          .doc(user.uid)
+          .collection('savedBooks')
+          .snapshotChanges().pipe(map(changes => {
+            return changes.map(action => {
+              const data = action.payload.doc.data();
+              data.id = action.payload.doc.id;
+              return data;
+            })
+          }))
+        }
+      })
+    )
     return this.savedBooks;
   }
 
@@ -53,8 +52,17 @@ export class FirebaseService {
     });
   }
 
-  removeBook(book: Book) {
-    // TODO
+  removeBook(isbn: string) {
+    console.log('firebaseservice removeBook()');
+    this._afAuth.authState.subscribe(user => {
+      if (!user) return
+      const userId = user.uid;
+      this._afs.collection('userData')
+        .doc(userId)
+        .collection('savedBooks')
+        .doc(isbn)
+        .delete();
+    });
   }
 
   login(email: string, password: string) {

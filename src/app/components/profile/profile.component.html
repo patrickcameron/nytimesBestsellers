@@ -6,14 +6,19 @@
     </div>
 </div>
 
-<div *ngIf="books" class="container">    
+<div *ngIf="books" class="container">
     <div>
-        <app-book 
-            class="columns books" 
-            *ngFor="let book of books" 
-            [book]="book"
-            [showBookRank]="false"
-        >
+        <app-book class="columns books" *ngFor="let book of books" [book]="book" [showBookRank]="false">
         </app-book>
+    </div>
+</div>
+
+<div 
+    *ngIf="booksLoaded && books.length === 0" 
+    class="container notification is-link is-light has-text-centered">
+    <div class="mt-5 mb-5">
+        <p class="is-size-1">😐</p>
+        <p>You have not saved any books yet.</p>
+        <a routerLink="/"><strong>Browse books</strong></a>
     </div>
 </div>

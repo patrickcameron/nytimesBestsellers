@@ -4,25 +4,32 @@ import { Observable } from 'rxjs';
 import { apiKeys } from 'apikeys';
 
 import { Book } from '../models/Book';
+import { map } from 'rxjs/operators';
 
 const httpOptions = {
-  headers: new HttpHeaders({'Content-Type': 'application/json'})
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class NytimesService {
+  private _books;
 
   constructor(private _http: HttpClient) { }
 
   getBestsellerList(): Observable<any> {
-    const url = 'https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json';
-    return this._http.get(`${url}?api-key=${apiKeys.key}`);
-  }
-
-  getReview(isbn:number): Observable<any> {
-    const url = 'https://api.nytimes.com/svc/books/v3/reviews.json';
-    return this._http.get(`${url}?api-key=${apiKeys.key}&isbn=${isbn}`);
+    return new Observable(observer => {
+      if (this._books) {
+        observer.next(this._books)
+        return observer.complete();
+      }
+      const url = 'https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json';
+      this._http.get(`${url}?api-key=${apiKeys.key}`).pipe().subscribe(books => {
+        this._books = books;
+        observer.next(this._books);
+        observer.complete();
+      })
+    })
   }
 }

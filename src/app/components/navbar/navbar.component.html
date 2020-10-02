@@ -16,8 +16,8 @@
           <div *ngIf="isLoggedIn === true" class="buttons">
             <a routerLink="/profile" class="button is-link">
               <strong>My Books</strong>
-              <!-- &nbsp;&nbsp;
-              <span class="tag is-rounded">0</span> -->
+              &nbsp;&nbsp;
+              <span *ngIf="savedBooksCount" class="tag is-rounded">{{ savedBooksCount }}</span>
             </a>
             <a (click)="logout()" class="button is-light">
               Log Out

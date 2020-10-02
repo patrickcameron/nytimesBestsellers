@@ -10,6 +10,7 @@ import { FirebaseService } from '../../services/firebase.service';
 })
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean;
+  savedBooksCount: number = 0;
 
   constructor( private _firebaseService: FirebaseService, private _router: Router) { }
 
@@ -17,6 +18,7 @@ export class NavbarComponent implements OnInit {
     this._firebaseService.getAuth().subscribe(auth => {
       if (auth) {
         this.isLoggedIn = true;
+        this.getSavedBooksCount();
       } else {
       this.isLoggedIn = false;
       }
@@ -25,7 +27,15 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this._firebaseService.logout();
-    this._router.navigate(['/']); // TODO: Change redirection.
+    // TODO: Change redirection.
+    this._router.navigate(['/']);
+  }
+
+  getSavedBooksCount() {
+    this._firebaseService.getSavedBooks().subscribe(books => {
+      console.log(books);
+      this.savedBooksCount = books.length;
+    })
   }
 
 }

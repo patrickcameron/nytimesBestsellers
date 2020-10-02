@@ -19,19 +19,14 @@ export class BookComponent implements OnInit {
 
   constructor(private _booksService: NytimesService, private _firebaseService: FirebaseService) { }
 
-  ngOnInit(): void {
-    // this.getReview(this.book.primary_isbn13);
-  }
+  ngOnInit(): void {}
 
-  saveBook(book: Book) {
-    console.log('book component saveBook()');
-    console.log(book);
-    this._firebaseService.saveBook(book);
+  toggleSaveBook(book: Book) {
+    if (book.isSaved) {
+      this._firebaseService.removeBook(book.primary_isbn13);
+    } else {
+      this._firebaseService.saveBook(book);
+    }
+    book.isSaved = !book.isSaved;
   }
-
-  // getReview(isbn:number) {
-  //   this._booksService.getReview(isbn).subscribe(data => {
-  //     console.log(data);
-  //   });
-  // }
 }
