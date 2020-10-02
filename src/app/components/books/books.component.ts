@@ -13,30 +13,42 @@ import { Book } from '../../models/Book';
 })
 export class BooksComponent implements OnInit {
   books: Book[];
-  savedBooks: Book[];
   booksLoaded: boolean = false;
+  isLoggedIn: boolean;
   listDate: any;
   listTitle: string;
+  savedBooks: Book[];
 
   constructor(private _booksService: NytimesService, private _firebaseService: FirebaseService) { }
 
   ngOnInit(): void {
 
-    this._firebaseService.getSavedBooks().subscribe(books => {
-      this.savedBooks = books;
-      this.getNYTBooks();
-    });
+    this._firebaseService.getAuth().subscribe(auth => {
+      if (auth) {
+        console.log('User logged in');
+        this.isLoggedIn = true;
+        this._firebaseService.getSavedBooks().subscribe(books => {
+          this.savedBooks = books;
+          this.getNYTBooks();
+        });
+      } else {
+        console.log('User not logged in');
+        this.isLoggedIn = false;
+        this.getNYTBooks();
+      }
+    })
   }
   
   getNYTBooks() {
     this._booksService.getBestsellerList().subscribe(data => { 
       if (!this.booksLoaded) {
+        console.log('load books');
         this.listTitle = data.results.list_name;
         this.listDate = this.formatDate(data.results.bestsellers_date);
         this.books = data.results.books.map(book => {
           return {
             ...book,
-            isSaved: this.checkIfSaved(book.primary_isbn13)
+            isSaved: this.isLoggedIn ? this.checkIfSaved(book.primary_isbn13) : false
           }
         });
         this.booksLoaded = true;

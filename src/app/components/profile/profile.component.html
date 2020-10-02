@@ -8,7 +8,13 @@
 
 <div *ngIf="books" class="container">
     <div>
-        <app-book class="columns books" *ngFor="let book of books" [book]="book" [showBookRank]="false">
+        <app-book 
+            class="columns books" 
+            *ngFor="let book of books" 
+            [book]="book" 
+            [showBookRank]="false"
+            [isLoggedIn]="true"
+        >
         </app-book>
     </div>
 </div>

@@ -12,7 +12,7 @@
     <div class="block">
         <p>{{ book.description }}</p>
     </div>
-    <div class="block buttons">
+    <div *ngIf="isLoggedIn" class="block buttons">
         <button [ngClass]="{'is-loading':isSaving}" class="button is-link" (click)="toggleSaveBook(book)">
             <span *ngIf="book.isSaved" class="icon is-small">
                 <i class="fas fa-check"></i>

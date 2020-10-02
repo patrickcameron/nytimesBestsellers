@@ -4,7 +4,6 @@ import { map, switchMap } from 'rxjs/operators';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 
-
 import { Book } from '../models/Book';
 
 @Injectable({
@@ -21,7 +20,6 @@ export class FirebaseService {
     this.savedBooks = this._afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
-          console.log(user.uid);
           return this._afs
           .collection('userData')
           .doc(user.uid)
