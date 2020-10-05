@@ -1,8 +1,9 @@
+import { Router } from '@angular/router';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFireAuth } from 'angularfire2/auth';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { AngularFireAuth } from 'angularfire2/auth';
 
 import { Book } from '../models/Book';
 
@@ -14,7 +15,11 @@ export class FirebaseService {
   user: Observable<any>;
   authState: any = null;
 
-  constructor(private _afs: AngularFirestore, private _afAuth: AngularFireAuth) {}
+  constructor(
+    private _afs: AngularFirestore, 
+    private _afAuth: AngularFireAuth,
+    private _router: Router
+  ) {}
 
   getSavedBooks(): Observable<any> {
     this.savedBooks = this._afAuth.authState.pipe(
@@ -31,6 +36,8 @@ export class FirebaseService {
               return data;
             })
           }))
+        } else {
+          return new Observable; // Return empty observable.
         }
       })
     )
@@ -94,7 +101,9 @@ export class FirebaseService {
   }
 
   logout() {
-    this._afAuth.auth.signOut();
+    this._afAuth.auth.signOut().then(() => {
+      this._router.navigate(['/']);
+    });
   }
 
   getAuth() {

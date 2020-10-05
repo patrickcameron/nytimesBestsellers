@@ -13,11 +13,23 @@
         <p>{{ book.description }}</p>
     </div>
     <div *ngIf="isLoggedIn" class="block buttons">
-        <button [ngClass]="{'is-loading':isSaving}" class="button is-link" (click)="toggleSaveBook(book)">
+        <button 
+            *ngIf="context == 'home'"
+            class="button is-link" 
+            (click)="toggleSaveBook(book)">
             <span *ngIf="book.isSaved" class="icon is-small">
                 <i class="fas fa-check"></i>
             </span>
             <span>{{ book.isSaved ? 'Saved' : 'Save' }}</span>
+        </button>
+        <button 
+            *ngIf="context == 'profile'"
+            class="button is-danger" 
+            (click)="toggleSaveBook(book)">
+            <span class="icon is-small">
+                <i class="fas fa-trash"></i>
+            </span>
+            <span>Remove</span>
         </button>
     </div>
 </div>

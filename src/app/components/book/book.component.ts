@@ -12,12 +12,15 @@ import { Book } from '../../models/Book';
 })
 export class BookComponent implements OnInit {
   @Input() book: Book;
+  @Input() context: string;
   @Input() isLoggedIn: boolean;
   @Input() showBookRank: boolean = true;
   @Output() checkIfSaved: EventEmitter<any> = new EventEmitter<any>();
-  isSaving: boolean = false;
 
-  constructor(private _booksService: NytimesService, private _firebaseService: FirebaseService) { }
+  constructor(
+    private _booksService: NytimesService, 
+    private _firebaseService: FirebaseService
+  ) { }
 
   ngOnInit(): void {}
 

@@ -12,6 +12,7 @@
             class="columns books" 
             *ngFor="let book of books" 
             [book]="book"
+            [context]="'home'"
             [isLoggedIn]="isLoggedIn"
             (checkIfSaved)="checkIfSaved($event)"
         >
