@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NytimesService } from '../../services/nytimes.service';
-import { switchMap } from 'rxjs/operators';
-
 import { FirebaseService } from '../../services/firebase.service';
-
+import { devlog } from '../../helpers/devlog';
 import { Book } from '../../models/Book';
 
 @Component({
@@ -25,14 +23,14 @@ export class BooksComponent implements OnInit {
 
     this._firebaseService.getAuth().subscribe(auth => {
       if (auth) {
-        console.log('User logged in');
+        devlog('User logged in');
         this.isLoggedIn = true;
         this._firebaseService.getSavedBooks().subscribe(books => {
           this.savedBooks = books;
           this.getNYTBooks();
         });
       } else {
-        console.log('User not logged in');
+        devlog('User not logged in');
         this.isLoggedIn = false;
         this.getNYTBooks();
       }
@@ -42,7 +40,7 @@ export class BooksComponent implements OnInit {
   getNYTBooks() {
     this._booksService.getBestsellerList().subscribe(data => { 
       if (!this.booksLoaded) {
-        console.log('load books');
+        devlog('Load books');
         this.listTitle = data.results.list_name;
         this.listDate = this.formatDate(data.results.bestsellers_date);
         this.books = data.results.books.map(book => {

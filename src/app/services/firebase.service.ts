@@ -4,7 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-
+import { devlog } from '../helpers/devlog';
 import { Book } from '../models/Book';
 
 @Injectable({
@@ -45,7 +45,7 @@ export class FirebaseService {
   }
 
   saveBook(book: Book) {
-    console.log('firebaseservice savebook()');
+    devlog('firebaseservice savebook()');
     this._afAuth.authState.subscribe(user => {
       if (!user) return
       const userId = user.uid;
@@ -58,7 +58,7 @@ export class FirebaseService {
   }
 
   removeBook(isbn: string) {
-    console.log('firebaseservice removeBook()');
+    devlog('firebaseservice removeBook()');
     this._afAuth.authState.subscribe(user => {
       if (!user) return
       const userId = user.uid;
@@ -82,7 +82,7 @@ export class FirebaseService {
     return new Promise((resolve, reject) => {
       this._afAuth.auth.createUserWithEmailAndPassword(email, password)
         .then(userData => {
-          console.log(userData);
+          devlog(userData);
           const userId = userData.user.uid;
           const savedBooks = {
             savedBooks: {
