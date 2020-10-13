@@ -1,16 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core'; 
 import { FooterComponent } from './footer.component';
 
 describe('FooterComponent', () => {
     let component: FooterComponent;
     let fixture: ComponentFixture<FooterComponent>;
+    let el: DebugElement;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [ FooterComponent ]
-        })
-        .compileComponents();
+        }).compileComponents();
     }));
 
     beforeEach(() => {
@@ -24,8 +25,9 @@ describe('FooterComponent', () => {
     });
 
     it('should display the current year', () => {
-        var currYear = new Date().getFullYear();
-        var result = component.getCurrentYear();
-        expect(result).toEqual(currYear);
+        el = fixture.debugElement.query(By.css('span.year'));
+        var expected = new Date().getFullYear().toString();
+        var result = el.nativeElement.textContent;
+        expect(result).toEqual(expected);
     })
 });
