@@ -1,8 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-
-import { NytimesService } from '../../services/nytimes.service';
 import { FirebaseService } from '../../services/firebase.service';
-
 import { Book } from '../../models/Book';
 
 @Component({
@@ -14,13 +11,9 @@ export class BookComponent implements OnInit {
   @Input() book: Book;
   @Input() context: string;
   @Input() isLoggedIn: boolean;
-  @Input() showBookRank: boolean = true;
   @Output() checkIfSaved: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(
-    private _booksService: NytimesService, 
-    private _firebaseService: FirebaseService
-  ) { }
+  constructor(private _firebaseService: FirebaseService) { }
 
   ngOnInit(): void {}
 

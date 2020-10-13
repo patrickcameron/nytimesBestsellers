@@ -2,7 +2,7 @@
     <img class="book-image" src="{{ book.book_image }}" alt="">
 </div>
 <div class="column book-details">
-    <div *ngIf="showBookRank" class="block">
+    <div *ngIf="context == 'home'" class="block">
         <span class="tag is-medium is-rounded">#{{ book.rank }}</span>
     </div>
     <div class="block">
