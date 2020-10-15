@@ -6,10 +6,10 @@ import { BooktitlePipe } from '../../pipes/booktitle.pipe';
 fdescribe('BookComponent', () => {
     let component: BookComponent;
     let fixture: ComponentFixture<BookComponent>;
-    let mockFirebaseService: any;
+    let mockFirebaseService: jasmine.SpyObj<FirebaseService>;
 
     beforeEach(async(() => {
-        mockFirebaseService = {};
+        mockFirebaseService = jasmine.createSpyObj('FirebaseService', ['removeBook', 'saveBook']);
 
         TestBed.configureTestingModule({
             declarations: [ BookComponent, BooktitlePipe ],
@@ -35,5 +35,30 @@ fdescribe('BookComponent', () => {
 
     it('should create', () => {
         expect(component).toBeTruthy();
+    });
+
+    describe('toggleSaveBook()', () => {
+      describe('when the book is not saved', () => {
+        it('should save the book', () => {
+          const book: any = { isSaved: false };
+
+          component.toggleSaveBook(book);
+
+          expect(book.isSaved).toBe(true);
+          expect(mockFirebaseService.saveBook).toHaveBeenCalledWith(book);
+        });
+      });
+
+      describe('when the book is saved', () => {
+        it('should unsave the book', () => {
+          const primary_isbn13 = String(Math.random());
+          const book: any = { isSaved: true, primary_isbn13 };
+
+          component.toggleSaveBook(book);
+
+          expect(book.isSaved).toBe(false);
+          expect(mockFirebaseService.removeBook).toHaveBeenCalledWith(primary_isbn13);
+        });
+      });
     });
 });
