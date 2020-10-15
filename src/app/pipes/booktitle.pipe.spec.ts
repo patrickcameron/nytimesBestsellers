@@ -1,6 +1,6 @@
 import { BooktitlePipe } from './booktitle.pipe';
 
-describe('BooktitlePipe', () => {
+describe('Pipe: booktitle', () => {
   let pipe: BooktitlePipe;
 
   beforeEach(() => {
@@ -36,7 +36,7 @@ describe('BooktitlePipe', () => {
     })
   });
 
-  it('should convert multi word tiles to title case', () => {
+  it('should convert multi word titles to title case', () => {
     const titles = [
       {
         title: 'THE INVISIBLE LIFE OF ADDIE LARUE',
