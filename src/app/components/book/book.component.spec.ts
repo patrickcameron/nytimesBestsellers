@@ -3,7 +3,7 @@ import { BookComponent } from './book.component';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { BooktitlePipe } from '../../pipes/booktitle.pipe';
 
-fdescribe('BookComponent', () => {
+describe('BookComponent', () => {
     let component: BookComponent;
     let fixture: ComponentFixture<BookComponent>;
     let mockFirebaseService: jasmine.SpyObj<FirebaseService>;
