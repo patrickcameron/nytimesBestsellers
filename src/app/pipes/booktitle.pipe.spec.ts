@@ -21,4 +21,12 @@ describe('BooktitlePipe', () => {
       expect(pipe.transform(item.title)).toEqual(item.expected);
     })
   })
+
+  it('should convert single word titles to title case');
+
+  it('should convert multi word tiles to title case');
+
+  it('should not convert select words to title case')
+
+  it('should treat hyphens as word delimiters')
 });
