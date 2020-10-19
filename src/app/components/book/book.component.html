@@ -2,7 +2,7 @@
     <img class="book-image" src="{{ book.book_image }}" alt="">
 </div>
 <div class="column book-details">
-    <div *ngIf="context == 'home'" class="block">
+    <div *ngIf="context == 'home'" class="block book-rank">
         <span class="tag is-medium is-rounded">#{{ book.rank }}</span>
     </div>
     <div class="block">
@@ -15,7 +15,7 @@
     <div *ngIf="isLoggedIn" class="block buttons">
         <button 
             *ngIf="context == 'home'"
-            class="button is-link" 
+            class="button button--save is-link" 
             (click)="toggleSaveBook(book)">
             <span *ngIf="book.isSaved" class="icon is-small">
                 <i class="fas fa-check"></i>
@@ -24,7 +24,7 @@
         </button>
         <button 
             *ngIf="context == 'profile'"
-            class="button is-danger" 
+            class="button button--remove is-danger" 
             (click)="toggleSaveBook(book)">
             <span class="icon is-small">
                 <i class="fas fa-trash"></i>

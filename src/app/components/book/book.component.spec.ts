@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { BookComponent } from './book.component';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { BooktitlePipe } from '../../pipes/booktitle.pipe';
@@ -36,6 +37,36 @@ describe('Component: Book', () => {
     it('should create', () => {
         expect(component).toBeTruthy();
     });
+
+    describe('when parameter "context" is set to "home"', () => {
+      beforeEach(() => {
+        component.context = 'home';
+        fixture.detectChanges();
+      });
+
+      it('book rank should display', () => {
+        expect(fixture.debugElement.query(By.css('.book-rank'))).toBeDefined();
+      });
+
+      it('save button should display', () => {
+        expect(fixture.debugElement.query(By.css('.button--save'))).toBeDefined();
+      });
+    });
+
+    describe('when paramater "context" is set to "profile"', () => {
+      beforeEach(() => {
+        component.context = 'profile';
+        fixture.detectChanges();
+      });
+
+      it('book rank should not display', () => {
+        expect(fixture.debugElement.query(By.css('.book-rank'))).toBeNull();
+      });
+
+      it('remove button should display', () => {
+        expect(fixture.debugElement.query(By.css('.button--remove'))).toBeDefined();
+      });
+    })
 
     describe('toggleSaveBook()', () => {
       describe('when the book is not saved', () => {

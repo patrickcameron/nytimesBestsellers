@@ -11,7 +11,6 @@ export class BookComponent implements OnInit {
   @Input() book: Book;
   @Input() context: string;
   @Input() isLoggedIn: boolean;
-  @Output() checkIfSaved: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private _firebaseService: FirebaseService) { }
 
