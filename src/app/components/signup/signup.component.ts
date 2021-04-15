@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
 import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
@@ -13,8 +11,7 @@ export class SignupComponent implements OnInit {
   password: string;
 
   constructor(
-    private _firebaseService: FirebaseService,
-    private _router: Router
+    private _firebaseService: FirebaseService
   ) { }
 
   ngOnInit(): void {
@@ -22,9 +19,6 @@ export class SignupComponent implements OnInit {
 
   onSubmit() {
     this._firebaseService.register(this.email, this.password)
-    .then(res => {
-      this._router.navigate(['/'])
-    })
     .catch(err => {
       alert('err.message');
     });

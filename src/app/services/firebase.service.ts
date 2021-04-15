@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { devlog } from '../helpers/devlog';
 import { Book } from '../models/Book';
@@ -16,7 +16,7 @@ export class FirebaseService {
   authState: any = null;
 
   constructor(
-    private _afs: AngularFirestore, 
+    private _afs: AngularFirestore,
     private _afAuth: AngularFireAuth,
     private _router: Router
   ) {}
@@ -70,31 +70,27 @@ export class FirebaseService {
     });
   }
 
-  login(email: string, password: string) {
+  login(email: string, password: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this._afAuth.auth.signInWithEmailAndPassword(email, password)
-        .then(userData => resolve(userData),
-          err => reject(err))
+        .then(
+          userData => {
+            this._router.navigate(['/']);
+            resolve(userData);
+          }, err => reject(err)
+        )
     });
   }
 
-  register(email: string, password: string) {
+  register(email: string, password: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this._afAuth.auth.createUserWithEmailAndPassword(email, password)
         .then(userData => {
           devlog(userData);
           const userId = userData.user.uid;
-          const savedBooks = {
-            savedBooks: {
-              9781501188817: {
-                author: 'Ruth Ware',
-                title: 'ONE BY ONE'
-              }
-            }
-          };
-          this._afs.collection('userData').doc(userId).set(savedBooks);
+          this._afs.collection('userData').doc(userId).set({});
+          this._router.navigate(['/']);
           resolve(userData);
-
         },
           err => reject(err))
     })

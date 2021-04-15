@@ -1,8 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { BooksComponent } from './books.component';
-import { NytimesService } from 'src/app/services/nytimes.service';
+import { ProfileComponent } from './profile.component';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { of } from 'rxjs';
 
 const mockBestsellerList = [
     {
@@ -55,38 +54,31 @@ const mockBestsellerList = [
     }
 ]
 
-describe('Component: Books', () => {
-    let component: BooksComponent;
-    let fixture: ComponentFixture<BooksComponent>;
+describe('Component: Profile', () => {
+    let component: ProfileComponent;
+    let fixture: ComponentFixture<ProfileComponent>;
     let mockFirebaseService: jasmine.SpyObj<FirebaseService>;
-    let mockNytimesService: jasmine.SpyObj<NytimesService>;
 
     beforeEach(async(() => {
-        mockFirebaseService = jasmine.createSpyObj('FirebaseService',
+        mockFirebaseService = jasmine.createSpyObj(
+            'FirebaseService',
             {
-                getAuth: of(),
-                getSavedBooks: of(mockBestsellerList)
-            }
-        );
-        mockNytimesService = jasmine.createSpyObj('NytimesService',
-            {
-                getBestsellerList: of()
+                getSavedBooks: of(mockBestsellerList),
+                removeBook: () => null
             }
         );
 
         TestBed.configureTestingModule({
-            declarations: [BooksComponent],
+            declarations: [ ProfileComponent ],
             providers: [
-                { provide: FirebaseService, useValue: mockFirebaseService },
-                { provide: NytimesService, useValue: mockNytimesService }
-            ],
+                { provide: FirebaseService, useValue: mockFirebaseService }
+            ]
         }).compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(BooksComponent);
+        fixture = TestBed.createComponent(ProfileComponent);
         component = fixture.componentInstance;
-        component.savedBooks = mockBestsellerList;
         fixture.detectChanges();
     });
 
@@ -94,21 +86,13 @@ describe('Component: Books', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should check if user is logged in on init', () => {
+    it('should get books from firebaseService.getSavedBooks() on init', () => {
         component.ngOnInit();
-        expect(mockFirebaseService.getAuth).toHaveBeenCalled();
+        expect(mockFirebaseService.getSavedBooks).toHaveBeenCalled();
     });
 
-    describe('getNYTBooks()', () => {
-        it('should call NytimesService.getBestsellerList()', () => {
-            component.getNYTBooks();
-            expect(mockNytimesService.getBestsellerList).toHaveBeenCalled();
-        })
+    it('removeBook()', () => {
+        component.removeBook('1234');
+        expect(mockFirebaseService.removeBook).toHaveBeenCalledWith('1234');
     });
-
-    it('formatDate() should properly create a date object from the provided YYYY-MM-DD string', () => {
-        const date:string = '2020-10-20';
-        const expected:string = 'Tue Oct 20 2020';
-        expect(component.formatDate(date).toString()).toContain(expected);
-    });
-})
+});

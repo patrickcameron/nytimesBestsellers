@@ -11,13 +11,17 @@ import { Book } from '../../models/Book';
 })
 export class BooksComponent implements OnInit {
   books: Book[];
+  bookLists: any;
   booksLoaded: boolean = false;
   isLoggedIn: boolean;
-  listDate: any;
+  listDate: Date;
   listTitle: string;
   savedBooks: Book[];
 
-  constructor(private _booksService: NytimesService, private _firebaseService: FirebaseService) { }
+  constructor(
+    private _booksService: NytimesService,
+    private _firebaseService: FirebaseService
+  ) { }
 
   ngOnInit(): void {
 
@@ -26,6 +30,7 @@ export class BooksComponent implements OnInit {
         devlog('User logged in');
         this.isLoggedIn = true;
         this._firebaseService.getSavedBooks().subscribe(books => {
+          devlog(books);
           this.savedBooks = books;
           this.getNYTBooks();
         });
@@ -36,10 +41,11 @@ export class BooksComponent implements OnInit {
       }
     })
   }
-  
+
   getNYTBooks() {
-    this._booksService.getBestsellerList().subscribe(data => { 
+    this._booksService.getBestsellerList().subscribe(data => {
       if (!this.booksLoaded) {
+        console.log(data);
         devlog('Load books');
         this.listTitle = data.results.list_name;
         this.listDate = this.formatDate(data.results.bestsellers_date);
@@ -64,6 +70,7 @@ export class BooksComponent implements OnInit {
     return isSaved;
   }
 
+  // Convert date from 'YYYY-MM-DD' to 'MMM DD, YYYY'.
   formatDate(date:string) {
     const dateVals = date.split('-');
     const dateArray = dateVals.map(val => {

@@ -6,7 +6,7 @@ import { FooterComponent } from './footer.component';
 describe('Component: Footer', () => {
     let component: FooterComponent;
     let fixture: ComponentFixture<FooterComponent>;
-    let el: DebugElement;
+    let yearEl: DebugElement;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -25,9 +25,9 @@ describe('Component: Footer', () => {
     });
 
     it('should display the current year', () => {
-        el = fixture.debugElement.query(By.css('span.year'));
+        yearEl = fixture.debugElement.query(By.css('span.year'));
         var expected = new Date().getFullYear().toString();
-        var result = el.nativeElement.textContent;
+        var result = yearEl.nativeElement.textContent;
         expect(result).toEqual(expected);
     })
 });

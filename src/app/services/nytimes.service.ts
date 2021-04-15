@@ -3,9 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { apiKeys } from 'apikeys';
 
-import { Book } from '../models/Book';
-import { map } from 'rxjs/operators';
-
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 }
@@ -25,7 +22,7 @@ export class NytimesService {
         return observer.complete();
       }
       const url = 'https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json';
-      this._http.get(`${url}?api-key=${apiKeys.nyTimes.key}`).pipe().subscribe(books => {
+      this._http.get(`${url}?api-key=${apiKeys.nyTimes.key}`).subscribe(books => {
         this._books = books;
         observer.next(this._books);
         observer.complete();

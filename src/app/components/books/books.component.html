@@ -8,13 +8,12 @@
         </div>
     </div>
     <div>
-        <app-book 
-            class="columns books" 
-            *ngFor="let book of books" 
+        <app-book
+            class="columns books"
+            *ngFor="let book of books"
             [book]="book"
             [context]="'home'"
             [isLoggedIn]="isLoggedIn"
-            (checkIfSaved)="checkIfSaved($event)"
         >
         </app-book>
     </div>

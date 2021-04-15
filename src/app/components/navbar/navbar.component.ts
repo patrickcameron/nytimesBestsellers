@@ -10,7 +10,7 @@ export class NavbarComponent implements OnInit {
   isLoggedIn: boolean;
   savedBooksCount: number = 0;
 
-  constructor( private _firebaseService: FirebaseService) { }
+  constructor(private _firebaseService: FirebaseService) { }
 
   ngOnInit(): void {
     this._firebaseService.getAuth().subscribe(auth => {

@@ -5,7 +5,7 @@
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
-          <div *ngIf="isLoggedIn === false" class="buttons">
+          <div *ngIf="isLoggedIn === false" class="buttons is-logged-out">
             <a routerLink="/signup" class="button is-dark">
               <strong>Sign up</strong>
             </a>
@@ -13,7 +13,7 @@
               Log in
             </a>
           </div>
-          <div *ngIf="isLoggedIn === true" class="buttons">
+          <div *ngIf="isLoggedIn === true" class="buttons is-logged-in">
             <a routerLink="/profile" class="button is-link">
               <strong>My Books</strong>
               <span *ngIf="savedBooksCount" class="tag is-rounded ml-2">{{ savedBooksCount }}</span>

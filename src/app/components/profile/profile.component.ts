@@ -9,19 +9,13 @@ import { FirebaseService } from '../../services/firebase.service';
 })
 export class ProfileComponent implements OnInit {
   books: any;
-  userId: any;
   booksLoaded: boolean = false;
 
   constructor(private _firebaseService: FirebaseService) {}
 
   ngOnInit(): void {
     this._firebaseService.getSavedBooks().subscribe(books => {
-      this.books = books.map(book => {
-        return {
-          ...book,
-          isSaved: true 
-        }
-      });
+      this.books = books;
       this.booksLoaded = true;
     })
   }

@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FirebaseService } from '../../services/firebase.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +11,7 @@ export class LoginComponent implements OnInit {
   password: string;
 
   constructor(
-    private _firebaseService: FirebaseService,
-    private _router: Router
+    private _firebaseService: FirebaseService
   ) { }
 
   ngOnInit(): void {
@@ -21,9 +19,6 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this._firebaseService.login(this.email, this.password)
-      .then(res => {
-        this._router.navigate(['/']);
-      })
       .catch(err => {
         // TODO: Bulma-based error message.
         alert(err.message);
